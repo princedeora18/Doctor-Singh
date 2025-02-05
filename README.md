@@ -10,7 +10,6 @@
 5. [Training the Model](#training-the-model)
 6. [Making Predictions](#making-predictions)
 7. [File Structure](#file-structure)
-8. [License](#license)
 
 ## Overview
 
