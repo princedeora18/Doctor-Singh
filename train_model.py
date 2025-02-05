@@ -77,5 +77,6 @@ model.fit(
 test_loss, test_acc = model.evaluate(test_data, steps=test_data.samples // test_data.batch_size)
 print(f"Test Accuracy: {test_acc * 100:.2f}%")
 
+
 # Save the trained model
 model.save('pneumonia_detection_model.h5')
