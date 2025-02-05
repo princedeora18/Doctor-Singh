@@ -134,5 +134,5 @@ Doctor-Singh/
 │
 ├── train_model.py             # Script to train the model
 ├── predict.py                 # Script to make predictions
-└── pneumonia_detection_model.h5          # Project dependencies
+└── pneumonia_detection_model.h5 
 ```
