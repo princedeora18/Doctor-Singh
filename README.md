@@ -130,9 +130,8 @@ Doctor-Singh/
 │   ├── test/                  # Testing images
 │
 ├── model/                     # Model storage
-│   ├── doctor_singh_model.h5  # Saved model
+│   ├── pneumonia_detection_model.h5  # Saved model
 │
 ├── train_model.py             # Script to train the model
 ├── predict.py                 # Script to make predictions
-└── pneumonia_detection_model.h5 
 ```
