@@ -19,5 +19,5 @@ def predict_image(img_path):
         print('Normal')
 
 if __name__ == '__main__':
-    img_path = 'PATH'  # Image path
+    img_path = 'path_to_image.jpeg'  # Image path
     predict_image(img_path)
