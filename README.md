@@ -49,11 +49,24 @@ pip install -r requirements.txt
 ```
 ## Dataset
 
-The dataset used in this project consists of chest X-ray images classified into two categories:
+This project uses the Chest X-Ray Images (Pneumonia) dataset from Kaggle.
 
-Pneumonia: Images with pneumonia.
-Normal: Healthy images.
-The dataset can be found in the following directory structure:
+The Chest X-Ray Images (Pneumonia) dataset from Kaggle is organized into three main directories: train, test, and val, each containing subdirectories for the two classes: NORMAL and PNEUMONIA
+### Downloading the Dataset:
+#### 1. Download the Dataset:
+
+1. Visit the Chest X-Ray Images (Pneumonia) dataset page on Kaggle.
+link:https://www.kaggle.com/datasets/paultimothymooney/chest-xray-pneumonia
+
+ 
+2. Click on the "Download" button to obtain the dataset.
+
+
+#### 2. Extract the Dataset:
+1. After downloading, extract the contents of the ZIP file to access the images.
+
+
+#### 3. Organize the Dataset:
 
 ```format
 chest_xray/
@@ -67,6 +80,7 @@ chest_xray/
         NORMAL/
         PNEUMONIA/
 ```
+For more details, refer to the Chest X-Ray Images (Pneumonia) dataset page on Kaggle.
 ## Training the Model
 
 The model can be trained using the provided training script. Make sure your dataset is organized and paths are correctly set. Run the training code:
