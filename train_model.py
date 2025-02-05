@@ -4,9 +4,9 @@ from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 # Set paths for datasets
-train_data_dir = 'C:/Users/Viram/Desktop/Prince/GitHub/Doctor-Singh/chest_xray/train'
-val_data_dir = 'C:/Users/Viram/Desktop/Prince/GitHub/Doctor-Singh/chest_xray/val'
-test_data_dir = 'C:/Users/Viram/Desktop/Prince/GitHub/Doctor-Singh/chest_xray/test'
+train_data_dir = 'Your/Path/train'
+val_data_dir = 'Your/Path/test'
+test_data_dir = 'Your/Path/val'
 
 # Data augmentation for training data
 train_datagen = ImageDataGenerator(
