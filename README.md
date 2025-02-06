@@ -128,14 +128,15 @@ Here is a quick overview of the project structure:
 ```bash
 Doctor-Singh/
 │
-├── chest_xray/                # Chest X-ray dataset
-│   ├── train/                 # Training images
-│   ├── val/                   # Validation images
-│   ├── test/                  # Testing images
+├── chest_xray/                # X-ray images dataset  
+│   ├── train/                 # Images used for training the model  
+│   ├── val/                   # Images for validation (checking during training)  
+│   ├── test/                  # Images for testing the final model  
 │
-├── model/                     # Model storage
-│   ├── pneumonia_detection_model.h5  # Saved model
+├── model/                     # Folder to store trained models  
+│   ├── pneumonia_detection_model.h5  # The saved model file  
 │
-├── train_model.py             # Script to train the model
-├── predict.py                 # Script to make predictions
+├── train_model.py             # Script to train the model  
+├── predict.py                 # Script to use the model for predictions  
+└── requirements.txt           # List of required libraries  
 ```
