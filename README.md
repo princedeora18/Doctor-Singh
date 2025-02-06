@@ -43,7 +43,12 @@ cd Doctor-Singh
 ```
 ### 2. Install the dependencies (if you haven't already):
 
-```bash
+#### You can create one with your dependencies. Run(powershell):
+```powershell
+pip freeze > requirements.txt
+```
+#### Then install:
+```powershell
 pip install -r requirements.txt
 ```
 ## Dataset
