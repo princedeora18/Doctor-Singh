@@ -3,7 +3,7 @@ from tensorflow.keras.preprocessing import image
 import numpy as np
 
 
-model = tf.keras.models.load_model('pneumonia_detection_model.h5')  # Load the saved model
+model = tf.keras.models.load_model('Updated_pneumonia_detection_model.h5')  # Load the saved model
 
 
 def predict_image(img_path):
@@ -19,5 +19,5 @@ def predict_image(img_path):
         print('Normal')
 
 if __name__ == '__main__':
-    img_path = 'path_to_image.jpeg'  # Image path
+    img_path = 'your.jpg'  # Image path
     predict_image(img_path)

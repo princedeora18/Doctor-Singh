@@ -1,82 +1,87 @@
 import tensorflow as tf
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense
-from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras import layers, models, callbacks
 
 # Set paths for datasets
-train_data_dir = 'Your/Path/train'
-val_data_dir = 'Your/Path/test'
-test_data_dir = 'Your/Path/val'
+train_data_dir = r'path_to_dataset'
+val_data_dir = r'path_to_dataset'
+test_data_dir = r'path_to_dataset'
 
-# Data augmentation for training data
-train_datagen = ImageDataGenerator(
-    rescale=1./255,
-    rotation_range=40,
-    width_shift_range=0.2,
-    height_shift_range=0.2,
-    shear_range=0.2,
-    zoom_range=0.2,
-    horizontal_flip=True,
-    fill_mode='nearest'
-)
+# Parameters
+batch_size = 32
+img_height = 150
+img_width = 150
 
-test_datagen = ImageDataGenerator(rescale=1./255)  # Test data only rescaling
-val_datagen = ImageDataGenerator(rescale=1./255)  # Validation data only rescaling
+# Function to create datasets
+def create_dataset(directory, subset):
+    return tf.keras.utils.image_dataset_from_directory(
+        directory,
+        validation_split=0.2,
+        subset=subset,
+        seed=123,
+        image_size=(img_height, img_width),
+        batch_size=batch_size
+    )
 
-# Loading data from directories
-train_data = train_datagen.flow_from_directory(
-    train_data_dir,
-    target_size=(150,150),
-    batch_size=32,
-    class_mode='binary'
-)
+# Create training and validation datasets
+train_ds = create_dataset(train_data_dir, 'training')
+val_ds = create_dataset(val_data_dir, 'validation')
 
-val_data = val_datagen.flow_from_directory(
-    val_data_dir,
-    target_size=(150,150),
-    batch_size=32,
-    class_mode='binary'
-)
+# Configure datasets for performance
+AUTOTUNE = tf.data.AUTOTUNE
+train_ds = train_ds.cache().shuffle(1000).prefetch(buffer_size=AUTOTUNE)
+val_ds = val_ds.cache().prefetch(buffer_size=AUTOTUNE)
 
-test_data = test_datagen.flow_from_directory(
-    test_data_dir,
-    target_size=(150,150),
-    batch_size=32,
-    class_mode='binary'
-)
+# Data augmentation
+data_augmentation = models.Sequential([
+    layers.RandomFlip('horizontal'),
+    layers.RandomRotation(0.1),
+    layers.RandomZoom(0.1),
+])
 
-# Building the model
-model = Sequential([
-    Conv2D(32, (3, 3), activation='relu', input_shape=(150, 150, 3)),
-    MaxPooling2D(2, 2),
-    Conv2D(64, (3, 3), activation='relu'),
-    MaxPooling2D(2, 2),
-    Conv2D(128, (3, 3), activation='relu'),
-    MaxPooling2D(2, 2),
-    Flatten(),
-    Dense(128, activation='relu'),
-    Dense(1, activation='sigmoid')  # For binary classification: Pneumonia vs Normal
+# Building the model with explicit input shape
+model = models.Sequential([
+    data_augmentation,
+    layers.Rescaling(1./255, input_shape=(img_height, img_width, 3)),
+    layers.Conv2D(32, (3, 3), activation='relu'),
+    layers.MaxPooling2D(2, 2),
+    layers.Conv2D(64, (3, 3), activation='relu'),
+    layers.MaxPooling2D(2, 2),
+    layers.Conv2D(128, (3, 3), activation='relu'),
+    layers.MaxPooling2D(2, 2),
+    layers.Flatten(),
+    layers.Dense(128, activation='relu'),
+    layers.Dropout(0.5),
+    layers.Dense(1, activation='sigmoid')  # Binary classification: Pneumonia vs Normal
 ])
 
 # Compile model
 model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 
+# Build model explicitly (fix for summary error)
+model.build(input_shape=(None, img_height, img_width, 3))
+
 # Print model summary
 model.summary()
 
+# Callbacks
+early_stopping = callbacks.EarlyStopping(monitor='val_loss', patience=3, restore_best_weights=True)
+
 # Training the model
-model.fit(
-    train_data,
-    steps_per_epoch=train_data.samples // train_data.batch_size,
+history = model.fit(
+    train_ds,
+    validation_data=val_ds,
     epochs=10,
-    validation_data=val_data,
-    validation_steps=val_data.samples // val_data.batch_size
+    callbacks=[early_stopping]
 )
 
 # Evaluate the model with test data
-test_loss, test_acc = model.evaluate(test_data, steps=test_data.samples // test_data.batch_size)
+test_ds = tf.keras.utils.image_dataset_from_directory(
+    test_data_dir,
+    image_size=(img_height, img_width),
+    batch_size=batch_size
+)
+test_loss, test_acc = model.evaluate(test_ds)
 print(f"Test Accuracy: {test_acc * 100:.2f}%")
 
-
 # Save the trained model
-model.save('pneumonia_detection_model.h5')
+model.save('Updated_pneumonia_detection_model.h5')
