@@ -101,24 +101,25 @@ import tensorflow as tf
 from tensorflow.keras.preprocessing import image
 import numpy as np
 
-model = tf.keras.models.load_model('doctor_singh_model.h5')  # Load the trained model
+
+model = tf.keras.models.load_model('pneumonia_detection_model.h5')  # Load the saved model
+
 
 def predict_image(img_path):
-    img = image.load_img(img_path, target_size=(150, 150))  # Resize the image
-    img_array = image.img_to_array(img) / 255.0  # Normalize the image
-    img_array = np.expand_dims(img_array, axis=0)  # Add batch dimension
+  img = image.load_img(img_path, target_size=(150, 150))   # Resize image
+  img_array = image.img_to_array(img) / 255.0   # Convert to array and normalize
+  img_array = np.expand_dims(img_array, axis=0)  # Add batch dimension
 
-    prediction = model.predict(img_array)
+  prediction = model.predict(img_array)
 
-    if prediction[0] > 0.5:
+  if prediction[0] > 0.5:
         print('Pneumonia')
-    else:
+  else:
         print('Normal')
 
 if __name__ == '__main__':
-    img_path = 'path_to_image.jpeg'  # Provide your image path
+    img_path = 'path_to_image.jpeg'  # Image path
     predict_image(img_path)
-
 ```
 Make sure to replace 'path_to_image.jpeg' with the path to your image.
 
@@ -128,14 +129,15 @@ Here is a quick overview of the project structure:
 ```bash
 Doctor-Singh/
 │
-├── chest_xray/                # Chest X-ray dataset
-│   ├── train/                 # Training images
-│   ├── val/                   # Validation images
-│   ├── test/                  # Testing images
+├── chest_xray/                # X-ray images dataset  
+│   ├── train/                 # Images used for training the model  
+│   ├── val/                   # Images for validation (checking during training)  
+│   ├── test/                  # Images for testing the final model  
 │
-├── model/                     # Model storage
-│   ├── pneumonia_detection_model.h5  # Saved model
+├── model/                     # Folder to store trained models  
+│   ├── pneumonia_detection_model.h5  # The saved model file  
 │
-├── train_model.py             # Script to train the model
-├── predict.py                 # Script to make predictions
+├── train_model.py             # Script to train the model  
+├── predict.py                 # Script to use the model for predictions  
+└── requirements.txt           # List of required libraries  
 ```
